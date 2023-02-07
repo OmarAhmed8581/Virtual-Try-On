@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>TryOn</title>
+    <!-- font icons -->
+    <link rel="stylesheet" href="static/assets/vendors/themify-icons/css/themify-icons.css">
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
+   <!--  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"
+/>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+ -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/9.0.3/swiper-bundle.css" integrity="sha512-AWiK+vDErA6h3T2nv7opFSklFsGjQfzZfVmLSz7++023U5hYQQ2/n5mtzt/+OJ6LWxkNkwXzfmvPNCKTEZvaQQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/9.0.3/swiper-bundle.min.js" integrity="sha512-xHBRcVjlUJjtDPdyWHU1h7H3/ydeE8NU+hqZg9eoP0DpIrc5iyxV1oRBrgp2FqFYJodZyHSAtWt5GDu2RUdSfQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+    <!-- Bootstrap + Dorang main styles -->
+	<link rel="stylesheet" href="static/assets/css/dorang.css">
+    <style>
+        #custom-button {
+            padding: 10px;
+            color: white;
+            background-color: #009578;
+            border: 1px solid #000;
+            border-radius: 5px;
+            cursor: pointer;
+            }
+
+            #custom-button:hover {
+            background-color: #00b28f;
+            }
+
+            #custom-text {
+            margin-left: 10px;
+            font-family: sans-serif;
+            color: #aaa;
+            }
+            #image{
+ width: 100%;
+  height: 500px;
+}
+.swiper {
+  
+  height: 350px;
+}
+
+.swiper-slide{
+    width: 300px;
+    height: 450px;
+    border-radius: 7px;
+}
+
+.swiper-slide img{
+     width: 300px;
+    height: 300px;
+    border-radius: 7px;
+}
+
+.swiper-slide-active{
+   transform: scale(1.2);
+   transition: .4s
+}
+
+
+    </style>
+
+</head>
+
+<body data-spy="scroll" data-target=".navbar" data-offset="40" id="home">
+
+    <div class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" id="capture_model" >
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Capture Images</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><img src="" id="img_cap" style="width: 100%;height: auto;"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="save_file()">Save changes</button>
+                <!-- <button type="button" class="btn btn-secondary" onclick="remove_file()">Delete</button> -->
+            </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- page navbar -->
+    <nav class="page-navbar" data-spy="affix" data-offset-top="10">
+        <ul class="nav-navbar container">
+            <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Gallery</a></li>
+            
+        </ul>
+    </nav><!-- end of page navbar -->
+
+    <div class="theme-selector">
+        <a href="javascript:void(0)" class="spinner">
+            <i class="ti-paint-bucket"></i>
+        </a>
+        <div class="body">
+            <a href="javascript:void(0)" class="light"></a>
+            <a href="javascript:void(0)" class="dark"></a>
+        </div>
+    </div>  
+
+    <!-- page header -->
+    <header class="header">
+        <div class="overlay"></div>
+        <div class="header-content">
+            <h1 class="header-title">TryOn</h1>
+            <p class="header-subtitle">Try on clothes with this new AI algorithm.</p>
+
+              <div class="contact-section">
+                <input type="file" id="real-file" hidden="hidden" />
+                <button type="button" id="custom-button">CHOOSE A Images</button>
+                <span id="custom-text">No file chosen, yet.</span>
+                <button class="btn btn-theme-color modal-toggle" onclick="video_path()"><i class="ti-camera text-danger"></i> Webcam</button>
+            </div>
+
+          
+             
+
+
+        </div>
+    </header><!-- end of page header -->
+
+    <!-- modal -->
+
+    <section>
+
+        <div class="col-md-10 col-lg-8 m-auto" style="text-align: center;">
+                <h6 class="title mb-4" style="color: #000">Take Photo</h6>
+            </div> 
+        <div class="row" style="margin-top: 2%;">
+            <div class="col-md-6" style="padding-left:6%">
+
+                <div class="card" style="background-color: cadetblue;box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
+                    <h5 class="card-header">Clothes Images</h5>
+                    <div class="card-body">
+                        <img id="image">
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-6"  style="padding-right:6%">
+                <div class="card" style="background-color: cadetblue;box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
+                    <h5 class="card-header">Live Webcam</h5>
+                    <div class="card-body">
+                        <img id="video1" width="100%" height="500px">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Gallery -->
+    <section id="exp">
+        <div class="container page-container">
+            <div class="col-md-10 col-lg-8 m-auto">
+                <h6 class="title mb-4" style="color: #000">Gallery</h6>
+            </div>  
+            <!-- Slider main container -->
+            <div class="swiper">
+              <!-- Additional required wrapper -->
+              <div class="swiper-wrapper" id="row_gallery">
+                {%  for result in file_name: %}
+                <!-- Slides -->
+                <div class="swiper-slide">
+                    <img src="static/gallery/{{ result }}">
+                </div>
+                {% endfor %}
+                
+              </div>
+              <!-- If we need pagination -->
+              <div class="swiper-pagination"></div>
+
+              <!-- If we need navigation buttons -->
+            <!--   <div class="swiper-button-prev"></div>
+              <div class="swiper-button-next"></div>
+ -->
+              <!-- If we need scrollbar -->
+              <!-- <div class="swiper-scrollbar"></div> -->
+            </div>
+    
+            <!-- <a href="#">Load More <i class="ti-angle-double-right angle"></i></a> -->
+    </section>
+    
+
+    <!-- page container -->
+    
+    <!--footer & pre footer -->
+  
+
+            <!-- footer -->
+            <footer class="footer" style="background: #000">      
+                <span>|</span>  
+                <div class="links">
+                    <a href="#">About</a>
+                    <a href="#exp">Gallery</a>
+                </div>
+            </footer><!-- end of footer -->
+
+        </div><!-- end of container -->
+    </div><!-- end of pre footer -->
+
+    <!-- core  -->
+    <script src="static/assets/vendors/jquery/jquery-3.4.1.js"></script>
+    <script src="static/assets/vendors/bootstrap/bootstrap.bundle.js"></script>
+
+    <!-- bootstrap affix -->
+    <script src="static/assets/vendors/bootstrap/bootstrap.affix.js"></script>
+
+    <!-- Dorang js -->
+    <script src="static/assets/js/dorang.js"></script>
+    <script>
+
+        const swiper = new Swiper('.swiper', {
+          // Optional parameters
+          slidesPerView:'3',    
+          loop: true,
+          spaceBetween:5,
+          gradCursor:true,
+          centeredSlides:true,
+          // If we need pagination
+          pagination: {
+            el: '.swiper-pagination',
+            clickable:true
+          },
+
+        });
+
+        // // <--------------------- Hide Inspect element ------------------------->
+        // document.onkeydown = function(e) {
+        //     console.log(event.keyCode)
+        //     if(event.keyCode == 123) {
+        //         return false;
+        //     }
+        //     if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)){
+        //         return false;
+        //     }
+        //     if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)){
+        //         return false;
+        //     }
+        //     if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)){
+        //         return false;
+        //     }
+        // }
+        // document.oncontextmenu = document.body.oncontextmenu = function() {return false;}
+
+        
+        var count=true;
+        const realFileBtn = document.getElementById("real-file");
+        const customBtn = document.getElementById("custom-button");
+        const customTxt = document.getElementById("custom-text");
+        var image_check;
+        var count_store=0;
+        var file_format = false
+        clear_cache()
+        function clear_cache(){
+            // Clear session storage
+            sessionStorage.clear();
+
+            // Clear local storage
+            localStorage.clear()
+        }
+        var store_int =  setInterval(get_store_images, 1000);
+        function get_store_images() {
+            // $('html[manifest=saveappoffline.appcache]').attr('content', '');
+            //     $(this).html(s);
+            // console.log("Hello!");
+            clear_cache()
+            clearInterval(store_int);
+            if (count){
+
+
+            
+                var xhr = new XMLHttpRequest();
+                document.getElementById("img_cap").src=""
+
+                xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    console.log(xhr.responseText);
+                    var data =  JSON.parse(xhr.responseText)
+                    if(data['len']==count_store+1){
+                        count=false;
+                        document.getElementById("img_cap").src="static/store/store_"+count_store.toString()+".jpg"
+                       
+                        $('#capture_model').modal('show');
+                        clearInterval(store_int);
+                        
+                    }
+                    else{
+                        count=true
+                        store_int =  setInterval(get_store_images, 1000);
+                    }
+                }
+                };
+
+                xhr.open("GET", "/get_images");
+                xhr.send();
+            }
+        }
+
+        function save_file(){
+            // $('html[manifest=saveappoffline.appcache]').attr('content', '');
+            //     $(this).html(s);
+            // count=true
+            clear_cache()
+            clearInterval(store_int);
+            var c =count_store-1
+            // document.getElementById("row_gallery").innerHTML +=`<div class="col-md-4" >
+            //     <a href="javascript:void(0)" class="overlay-img">
+            //         <img src="static/store/store_${c.toString()}.jpg"" alt="Download free bootstrap 4 landing page, free boootstrap 4 templates, Download free bootstrap 4.1 landing page, free boootstrap 4.1.1 templates, weber Landing page">  
+            //         <div style="box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;"></div>       
+            //     </a>
+            // </div>`
+
+           
+            var xhr = new XMLHttpRequest(); 
+            
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    console.log(xhr.responseText);
+                    var data =  JSON.parse(xhr.responseText)
+                    $('#capture_model').modal('hide');
+                    document.getElementById("img_cap").src=""
+                    alert(data['msg'])
+                    count=true
+                    count_store+=1
+                    store_int =  setInterval(get_store_images, 1000);
+
+                    document.getElementById("row_gallery").innerHTML +=`<div class="swiper-slide">
+                    <img src="static/gallery/${data['count'].toString()}.jpg">
+                    </div>`
+                   
+
+                }
+            };
+
+            xhr.open("GET", "/save_images");
+            xhr.send();
+        }
+
+        function remove_file(){
+            // $('html[manifest=saveappoffline.appcache]').attr('content', '');
+            //     $(this).html(s);
+           
+            clear_cache()
+            clearInterval(store_int);
+           
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    console.log(xhr.responseText);
+                    var data =  JSON.parse(xhr.responseText)
+                    $('#capture_model').modal('hide');
+                    alert(data['msg'])
+                    document.getElementById("img_cap").src=""
+                    // count=true
+                    count_store+=1
+                    count=true
+                    store_int =  setInterval(get_store_images, 1000);
+                    
+
+                }
+            };
+
+            xhr.open("GET", "/remove_images");
+            xhr.send();
+        }
+
+
+
+
+
+        customBtn.addEventListener("click", function() {
+            realFileBtn.click();
+        });
+        realFileBtn.addEventListener("change", function() {
+            if (realFileBtn.value) {
+                const reader = new FileReader()
+
+                var files=this.files[0]
+                image_check = files
+
+                reader.addEventListener("load", () => {
+                    document.querySelector("#image").src = reader.result
+                })
+
+                var form_data = new FormData();
+                form_data.append("files[]",image_check);
+            
+           
+               
+                $.ajax({
+
+                    url: "/process_images",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json', 
+                    data: form_data,
+                    type: 'post',
+                    success: function(response) {
+                        // console.log(response['message'])
+                        alert(response['message'])
+                        if(response['status']){
+                            file_format=true
+                        }
+                        else{
+                            
+                            file_format=false
+                        }
+                    }});
+
+                reader.readAsDataURL(this.files[0])
+                customTxt.innerHTML = realFileBtn.value.match(
+                /[\/\\]([\w\d\s\.\-\(\)]+)$/
+                )[1];
+            } else {
+                customTxt.innerHTML = "No file chosen, yet.";
+            }
+        });
+
+        function video_path(){
+        
+            if(file_format){
+                var videoInp=document.getElementById('file1')
+                
+                var form_data = new FormData();
+                form_data.append("files[]",image_check);
+            
+                $.ajax({
+
+                    url: "/process_Video",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json', 
+                    data: form_data,
+                    type: 'post',
+                    success: function(response) {
+                        console.log("video")
+                        document.getElementById("video1").src="{{ url_for('video_feed') }}"
+
+                }});
+            }
+            else{
+                alert("Please Select Images")
+            }
+            
+
+        }
+
+      
+    </script>
+        
+
+</body>
+</html>
